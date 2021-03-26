@@ -1,2 +1,2 @@
-# k8s_simulado
-Simulado pra prova de CKAD
+# k8s_estudos
+Varios repos para estudar e treinar para as provas de CKAD / CKA
