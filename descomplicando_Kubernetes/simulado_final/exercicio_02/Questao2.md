@@ -15,7 +15,7 @@ kubectl create namespace q2-ns
 
 3. Execute um dry run de criação de um pod para gerar o yaml e facilitar as demais configurações.
 ```bash
-    kubectl run pod-q2 --image nginx --n q1-ns --dry-run=client -o yaml > pod-q2-dry-run.yaml
+    kubectl run pod-q2 --image nginx --n q2-ns --dry-run=client -o yaml > pod-q2-dry-run.yaml
 ```
 4. Faça uma copia do pod-q2-dry-run.yaml com o nome pod-q2.yaml
 ```bash
