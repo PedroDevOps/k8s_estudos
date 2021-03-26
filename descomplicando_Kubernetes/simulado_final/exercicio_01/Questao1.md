@@ -123,7 +123,7 @@ status: {}
 ``` 
 19. Acesse o nó identificado no passo 14. e certifique que o volume criado não está mais presente.
 ```bash
-    find /var/lib/kubelet/pods/ -iname data
+    find /var/lib/kubelet/pods/ -iname volume-nao-persistente
 ``` 
 20. Delete o namespace
 ```bash
