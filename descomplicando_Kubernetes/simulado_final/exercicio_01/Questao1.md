@@ -105,11 +105,11 @@ status: {}
 ```
 15. Acesse remotamente o nó identificado no passo 14. e procure pela pasta onde foi montado o volume
 ```bash
-    find /var/lib/kubelet/pods/ -iname data
+    find /var/lib/kubelet/pods/ -iname volume-nao-persistente
 ``` 
 16. Liste os arquivos da pasta encontrada no passo 15.
 ```bash
-    ls < find /var/lib/kubelet/pods/ -iname data
+    ls no result (find /var/lib/kubelet/pods/ -iname volume-nao-persistente)
 ``` 
 ## Limpando ambiente (caso seja necessário)
 
