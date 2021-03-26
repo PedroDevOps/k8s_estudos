@@ -5,12 +5,18 @@ metadata:
   labels:
     run: pod-q1
   name: pod-q1
-  namespace: q1_ns
+  namespace: q1-ns
 spec:
   containers:
   - image: nginx
     name: pod-q1
     resources: {}
+    volumeMounts:
+    - mountPath: /data
+      name: volume-nao-persistente
+  volumes:
+  - name: volume-nao-persistente
+    emptyDir: {}
   dnsPolicy: ClusterFirst
   restartPolicy: Always
 status: {}
