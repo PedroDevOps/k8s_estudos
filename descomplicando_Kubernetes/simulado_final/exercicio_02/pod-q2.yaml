@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: pod-q2
+  name: pod-q2
+  namespace: q2-ns
+spec:
+  containers:
+  - image: nginx
+    name: pod-q2
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
