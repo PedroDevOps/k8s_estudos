@@ -1,0 +1,9 @@
+#!/bin/sh
+
+alias k=kubectl
+alias kgp="k get pods"
+alias kcns="k create ns"
+alias kgns="k get ns"
+alias kgtx="k config get-contexts"
+alias kctx="k config set-context --current --namespace"
+
