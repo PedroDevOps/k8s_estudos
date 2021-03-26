@@ -27,7 +27,7 @@ kubectl create namespace q2-ns
 ```
 6. Após criação, certifique que o pod escontrasse em estado de runnig.
 ```bash
-    kubectl get pod pod-q2.yaml -n q2-ns
+    kubectl get pods -n q2-ns
 ```
 7. Valide que o pod foi criado com os valores corretos.
 ```bash
@@ -41,22 +41,20 @@ kubectl create namespace q2-ns
 ```
 9. Execute o comando de criação do service passando como parâmetro o arquivo pod-q2-service-dry-run.yaml
 ```bash
-    kubectl create -f pod-q2.yaml -n q2-ns
+    kubectl create -f pod-q2-service-dry-run.yaml -n q2-ns
 ```
 
 ## Testando se criação ocorreu com sucesso
 
 10. Verifique se o Pod está no estado de runnig e se encontra no namespace correto
 ```bash
-    kubectl get pods --namespace q1-ns
+    kubectl get pods -n q1-ns
 ```
 11. Verifique se o Service está executando e se está no namespace correto
 ```bash
-    kubectl get services --namespace q1-ns
+    kubectl get services -n q1-ns
 ```
 12. De dentro do cluster tente acessar o IP presente no clusterIP do service pod-q2-service
 ```bash
     curl <IP do ClusterIP>
 ```
-
-
