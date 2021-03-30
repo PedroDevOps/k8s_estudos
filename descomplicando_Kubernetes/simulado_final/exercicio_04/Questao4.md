@@ -3,7 +3,7 @@
 Criar um PV Hostpath.
 
 ## Configuração Previa
-0. alguns alias recomendados:
+0. Cadastre alguns alias recomendados:
 ```bash
  alias k=kubectl
  alias kd="k describe"
@@ -17,21 +17,21 @@ Criar um PV Hostpath.
 ## Criação do Namespace e Definição Contexto 
 1. Crie o namespace `q4-ns`.
 ```bash
-kcns q4-ns
-ou
-kubectl create namespace q4-ns
+    kcns q4-ns
+    ou
+    kubectl create namespace q4-ns
 ```
 2. Mude o contexto para o namespace `q4-ns`, criado no passo anterior.
 ```bash
-kctx q4-ns
-ou
-kubectl config set-context --current --namespace q4-ns
+    kctx q4-ns
+    ou
+    kubectl config set-context --current --namespace q4-ns
 ```
 3. Confirme a mudança de contexto
 ```bash
-kgtx
-ou
-kubectl config get-context
+    kgtx
+    ou
+    kubectl config get-context
 ```
 
 ## Início da Solução
@@ -107,31 +107,76 @@ kubectl config get-context
 ```bash
     k create -f primeiro-pvc.yaml
 ```
-15. 
+16. Liste o PersitentVolume
 ```bash
-    k 
+    k get pv
 ```
-15. 
+17. Liste o PersistentVolumeClaim
 ```bash
-    k 
+    k get pvc
 ```
-15. 
+18. Crie um deployment que irá consumir esse volume:
 ```bash
-    k 
+    vim nfs-pv.yaml
 ```
-15. 
+19. 
 ```bash
-    k 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: nginx
+    name: nginx
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      run: nginx
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: nginx
+    spec:
+      containers:
+      - image: nginx
+        imagePullPolicy: Always
+        name: nginx
+        volumeMounts:
+        - name: nfs-pv
+          mountPath: /giropops
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      volumes:
+      - name: nfs-pv
+        persistentVolumeClaim:
+          claimName: primeiro-pvc
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30    
 ```
-15. 
+20. Crie o deployment a partir do manifesto.
 ```bash
-    k 
+    kubectl create -f nfs-pv.yaml
 ```
-15. 
+21. listar os arquivos dentro do path no contêiner 
 ```bash
-    k 
+    kubectl exec -ti nginx-xxxxxxxxxxx -- ls /giropops/
 ```
-15. 
+## Efetuando a Limpeza do ambiente (caso necessário)
+22. 
 ```bash
-    k 
+    k delete -f nfs-pv.yaml
+    k delete -f primeiro-pvc.yaml
+    k delete -f primeiro-pv.yaml
+    
 ```
