@@ -78,8 +78,8 @@ Ver quais os pods que mais estão consumindo cpu através do kubectl top.
 ## Limpando ambiente (caso seja necessário)
 13. Faça a limpesa do ambiente (Caso necessário)
 ```bash
-     kubectl delete -f deploy-nginx-q8
-     kubectl delete -f deploy-busybox-q8
+     kubectl delete -f deploy-nginx-q8.yaml
+     kubectl delete -f deploy-busybox-q8.yaml
      kubectl delete -f https://raw.githubusercontent.com/pythianarora/total-practice/master/sample-kubernetes-code/metrics-server.yaml
 ```
 14. Valide que nenhum artefato está presente no namespace `q8-ns`
