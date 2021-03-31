@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: pequeno-pv
+spec:
+    capacity:
+      storage: 1Gi
+    accessModes:
+    - ReadWriteMany
+    persistentVolumeReclaimPolicy: Retain
+    nfs:
+      path: /opt/diversos
+      server: 172.31.44.232
+      readOnly: false
