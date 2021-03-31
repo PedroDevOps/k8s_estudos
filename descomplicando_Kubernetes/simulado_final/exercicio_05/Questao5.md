@@ -1,6 +1,6 @@
-# Questão 7
+# Questão 5
 
-
+Criar um initcontainer para executar uma tarefa necessária para a subida do container principal.
 
 ## Configuração Previa
 0. alguns alias recomendados:
@@ -13,17 +13,17 @@ $ alias kgtx="k config get-contexts"
 $ alias kctx="k config set-context --current --namespace"
 ```
 ## Criação do Namespace e Definição Contexto 
-1. Crie o namespace `q7-ns`.
+1. Crie o namespace `q5-ns`.
 ```bash
-kcns q7-ns
+kcns q5-ns
 ou
-kubectl create namespace q7-ns
+kubectl create namespace q5-ns
 ```
-2. Mude o contexto para o namespace `q7-ns`, criado no passo anterior.
+2. Mude o contexto para o namespace `q5-ns`, criado no passo anterior.
 ```bash
-kctx q7-ns
+kctx q5-ns
 ou
-kubectl config set-context --current --namespace q7-ns
+kubectl config set-context --current --namespace q5-ns
 ```
 3. Confirme a mudança de contexto
 ```bash
@@ -33,36 +33,59 @@ kubectl config get-context
 ```
 
 ## Início da Solução
-4. 
+4. Crie o Pod a partir do manifesto:
 ```bash
-    k
+    vim nginx-initcontainer.yaml
 ```
-5. 
+5. Com o seguinte conteúdo:
 ```bash
-    k
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-demo
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: workdir
+      mountPath: /usr/share/nginx/html
+  initContainers:
+  - name: install
+    image: busybox
+    command: ['wget','-O','/work-dir/index.html','http://linuxtips.io']
+    volumeMounts:
+    - name: workdir
+      mountPath: "/work-dir"
+  dnsPolicy: Default
+  volumes:
+  - name: workdir
+    emptyDir: {}
 ```
-6. 
+6. Crie o pod a partir do manifesto.
 ```bash
-   k
+     kubectl create -f nginx-initcontainer.yaml
 ```
-7. 
+7. Visualize o conteúdo de um arquivo dentro de um contêiner do Pod.
 ```bash
-    k
+    kubectl exec -ti init-demo -- cat /usr/share/nginx/html/index.html
 ```
 
 ## 
-8. 
+8. Coletando os logs do contêiner init:
 ```bash
-    k
+    kubectl logs init-demo -c install
 ```   
 9. 
 ```bash
     k
 ```
 ## Testando a solução
-10. 
+10. Removendo o Pod a partir do manifesto:
 ```bash
-    k
+    kubectl delete -f nginx-initcontainer.yaml
 ```
 11. 
 ```bash
