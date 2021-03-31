@@ -1,16 +1,16 @@
 # Questão 6
 
-
+Criar um daemonset.
 
 ## Configuração Previa
 0. alguns alias recomendados:
 ```bash
-$ alias k=kubectl
-$ alias kgp="k get pods"
-$ alias kcns="k create ns"
-$ alias kgns="k get ns"
-$ alias kgtx="k config get-contexts"
-$ alias kctx="k config set-context --current --namespace"
+ alias k=kubectl
+ alias kgp="k get pods"
+ alias kcns="k create ns"
+ alias kgns="k get ns"
+ alias kgtx="k config get-contexts"
+ alias kctx="k config set-context --current --namespace"
 ```
 ## Criação do Namespace e Definição Contexto 
 1. Crie o namespace `q6-ns`.
@@ -35,40 +35,61 @@ kubectl config get-context
 ## Início da Solução
 4. 
 ```bash
-    k
+    vim primeiro-daemonset.yaml
 ```
 5. 
 ```bash
-    k
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: daemon-set-primeiro
+spec:
+  selector:
+    matchLabels:
+      system: Strigus
+  template:
+    metadata:
+      labels:
+        system: Strigus
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.7.9
+        ports:
+        - containerPort: 80
+  updateStrategy:
+    type: RollingUpdate
 ```
 6. 
 ```bash
-   k
+   kubectl create -f primeiro-daemonset.yaml
 ```
 7. 
 ```bash
-    k
+    kubectl get daemonset
 ```
-
-## 
 8. 
 ```bash
-    k
+    kubectl describe ds daemon-set-primeiro
 ```   
 9. 
 ```bash
-    k
+    kgp -o wide
 ```
 ## Testando a solução
 10. 
 ```bash
-    k
+    kubectl set image ds daemon-set-primeiro nginx=nginx:1.15.0
 ```
 11. 
 ```bash
-    k
+    kubectl rollout history ds daemon-set-primeiro --revision=1
 ```
 12. 
 ```bash
-    
+    kubectl rollout history ds daemon-set-primeiro --revision=2
+```
+13. 
+```bash
+    k delete -f primeiro-daemonset.yaml
 ```
