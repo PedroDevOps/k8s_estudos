@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: deploy-nginx-q9
+  name: deploy-nginx-q9
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: deploy-nginx-q9
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: deploy-nginx-q9
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        resources: {}
+status: {}

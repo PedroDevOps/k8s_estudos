@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: deploy-busybox-q9
+  name: deploy-busybox-q9
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: deploy-busybox-q9
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: deploy-busybox-q9
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        resources: {}
+status: {}
