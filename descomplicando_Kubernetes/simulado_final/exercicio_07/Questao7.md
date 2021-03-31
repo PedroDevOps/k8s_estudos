@@ -5,12 +5,12 @@
 ## Configuração Previa
 0. alguns alias recomendados:
 ```bash
-$ alias k=kubectl
-$ alias kgp="k get pods"
-$ alias kcns="k create ns"
-$ alias kgns="k get ns"
-$ alias kgtx="k config get-contexts"
-$ alias kctx="k config set-context --current --namespace"
+ alias k=kubectl
+ alias kgp="k get pods"
+ alias kcns="k create ns"
+ alias kgns="k get ns"
+ alias kgtx="k config get-contexts"
+ alias kctx="k config set-context --current --namespace"
 ```
 ## Criação do Namespace e Definição Contexto 
 1. Crie o namespace `q7-ns`.
@@ -35,40 +35,40 @@ kubectl config get-context
 ## Início da Solução
 4. 
 ```bash
-    k
+    kubectl create deploy deploy-nginx --image nginx --replicas 5 --dry-run=client -o yaml > deploy-ngix-dry-run.yaml
 ```
 5. 
 ```bash
-    k
+    cp deploy-ngix-dry-run.yaml deploy-nginx.yaml
 ```
 6. 
 ```bash
-   k
+   k create -f deploy-nginx.yaml
 ```
 7. 
 ```bash
-    k
+    kgp -o wide
 ```
 
 ## 
 8. 
 ```bash
-    k
+    kubectl scale deployment deploy-nginx --replicas=10
 ```   
 9. 
 ```bash
-    k
+    kubectl rollout status deployment deploy-nginx
 ```
 ## Testando a solução
 10. 
 ```bash
-    k
+    kubectl scale deployment deploy-nginx --replicas=3
 ```
 11. 
 ```bash
-    k
+    watch kubectl get pods
 ```
 12. 
 ```bash
-    
+    k delete -f deploy-ngix.yaml 
 ```
