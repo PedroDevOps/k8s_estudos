@@ -12,6 +12,7 @@ Colocar um node para que não execute nenhum containers.
  alias kgtx="k config get-contexts"
  alias kctx="k config set-context --current --namespace"
  alias
+ complete -F __start_kubectl k
 ```
 ## Criação do Namespace e Definição Contexto 
 1. Crie o namespace `q3-ns`.
@@ -82,11 +83,15 @@ kubectl config get-context
 ```bash
     k taint node xxxxxxx key1:NoExecute-
 ```
-13. Remova os deployments
+13. Incluindo novamente o Taint no Master (caso tenha sido removido)
+```bash
+    kubectl taint node xxxmasterxxx node-role.kubernetes.io/master:NoSchedule
+```
+14. Remova os deployments
 ```bash
     k delete deployment pods-q3-deployment
 ```
-14. Valide que nenhum artefato está presente no namespace `q3-ns`
+15. Valide que nenhum artefato está presente no namespace `q3-ns`
 ```bash
     kubectl get all -A | grep -i q3-ns
 ```

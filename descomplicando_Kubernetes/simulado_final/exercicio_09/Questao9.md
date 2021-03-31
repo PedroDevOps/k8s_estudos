@@ -11,6 +11,7 @@ Organizar a saída do comando "kubectl get pods" pelo tamanho do capacity storag
  alias kgns="k get ns"
  alias kgtx="k config get-contexts"
  alias kctx="k config set-context --current --namespace"
+ complete -F __start_kubectl k
 ```
 
 ## Criação do Namespace e Definição Contexto 
@@ -53,7 +54,7 @@ Organizar a saída do comando "kubectl get pods" pelo tamanho do capacity storag
 ```
 8. Crie um arquivo nesse diretório para teste futuro.
 ```bash
-    sudo touch /opt/diversos/COMECANCO
+    sudo touch /opt/diversos/COMECANDO
 ```   
 9. Crie do manifesto yaml do PersistentVolume
 ```bash
@@ -61,68 +62,42 @@ Organizar a saída do comando "kubectl get pods" pelo tamanho do capacity storag
 ```
 10. Altere o IP address do campo server para o IP address do node master
 ```bash
-    apiVersion: v1
-    kind: PersistentVolume
-    metadata:
-        name: pequeno-pv
-    spec:
-        capacity:
-            storage: 1Gi
-        accessModes:
-        - ReadWriteMany
-        persistentVolumeReclaimPolicy: Retain
-    nfs:
-        path: /opt/diversos
-        server: x.x.x.x
-        readOnly: false
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: pequeno-pv
+spec:
+    capacity:
+        storage: 1Gi
+    accessModes:
+    - ReadWriteMany
+    persistentVolumeReclaimPolicy: Retain
+nfs:
+    path: /opt/diversos
+    server: 172.31.44.232
+    readOnly: false
 ```
 11. Crie do manifesto yaml do PersistentVolume
 ```bash
-    sudo vim medio-pv-q9.yaml
+    cp pequeno-pv-q9.yaml medio-pv-q9.yaml
 ```
-12. Altere o IP address do campo server para o IP address do node master
+12. Altere o spec: --> capacity: --> storage: para (2Gi)
 ```bash
-    apiVersion: v1
-    kind: PersistentVolume
-    metadata:
-        name: medio-pv
-    spec:
-        capacity:
-            storage: 2Gi
-        accessModes:
-        - ReadWriteMany
-        persistentVolumeReclaimPolicy: Retain
-    nfs:
-        path: /opt/diversos
-        server: x.x.x.x
-        readOnly: false
+    sudo vim medio-pv-q9.yaml
 ```
 13. Crie do manifesto yaml do PersistentVolume
 ```bash
-    sudo vim grande-pv-q9.yaml
+    cp pequeno-pv-q9.yaml grande-pv-q9.yaml
 ```
-14. Altere o IP address do campo server para o IP address do node master
+14. Altere o o spec: --> capacity: --> storage: para (4Gi)
 ```bash
-    apiVersion: v1
-    kind: PersistentVolume
-    metadata:
-        name: grande-pv
-    spec:
-        capacity:
-            storage: 4Gi
-        accessModes:
-        - ReadWriteMany
-        persistentVolumeReclaimPolicy: Retain
-    nfs:
-        path: /opt/diversos
-        server: x.x.x.x
-        readOnly: false
+    sudo vim grande-pv-q9.yaml
 ```
 15. Crie os Persistent Volumes 
 ```bash
     kubectl create -f pequeno-pv-q9.yaml
     kubectl create -f medio-pv-q9.yaml
-    kubectl create -f grade-pv-q9.yaml
+    kubectl create -f grande-pv-q9.yaml
 ```
 16. Visualize mais detalhes do PV recém criado para confirmar correta configuração:
 ```bash
@@ -134,16 +109,16 @@ Organizar a saída do comando "kubectl get pods" pelo tamanho do capacity storag
 ```
 18. Com o seguinte conteúdo:
 ```bash
-    apiVersion: v1
-    kind: PersistentVolumeClaim
-    metadata:
-      name: pequeno-pvc
-    spec:
-      accessModes:
-      - ReadWriteMany
-      resources:
-        requests:
-        storage: 200Mi
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pequeno-pvc
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 200Mi
 ```
 19. Crie um PersitentVolumeClaim médio
 ```bash
@@ -151,16 +126,16 @@ Organizar a saída do comando "kubectl get pods" pelo tamanho do capacity storag
 ```
 20. Com o seguinte conteúdo:
 ```bash
-    apiVersion: v1
-    kind: PersistentVolumeClaim
-    metadata:
-      name: medio-pvc
-    spec:
-      accessModes:
-      - ReadWriteMany
-      resources:
-        requests:
-        storage: 900Mi
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: medio-pvc
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 900Mi
 ```
 21. Crie um PersitentVolumeClaim grande
 ```bash
@@ -168,22 +143,22 @@ Organizar a saída do comando "kubectl get pods" pelo tamanho do capacity storag
 ```
 22. Com o seguinte conteúdo:
 ```bash
-    apiVersion: v1
-    kind: PersistentVolumeClaim
-    metadata:
-      name: grande-pvc
-    spec:
-      accessModes:
-      - ReadWriteMany
-      resources:
-        requests:
-        storage: 1500Mi
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: grande-pvc
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1500Mi
 ```
 23. Crie os PersitentVolumeClaim a partir dos manifestos.
 ```bash
-    k create -f pequeno-pvc-q9.yaml
-    k create -f medio-pvc-q9.yaml
-    k create -f grande-pvc-q9.yaml
+k create -f pequeno-pvc-q9.yaml
+k create -f medio-pvc-q9.yaml
+k create -f grande-pvc-q9.yaml
 ```
 24. Liste os PersitentVolume
 ```bash
@@ -204,7 +179,7 @@ kind: Deployment
 metadata:
   labels:
     run: nginx-pequeno
-    name: nginx-pequeno
+  cname: nginx-pequeno
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -253,7 +228,7 @@ kind: Deployment
 metadata:
   labels:
     run: nginx-medio
-    name: nginx-medio
+  name: nginx-medio
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -302,7 +277,7 @@ kind: Deployment
 metadata:
   labels:
     run: nginx-grande
-    name: nginx-grande
+  name: nginx-grande
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -342,9 +317,9 @@ spec:
 ```
 32. Crie o deployment a partir dos manifesto.
 ```bash
-    kubectl create -f pequeno-deploy-nfs-pv-q9.yaml
-    kubectl create -f medio-deploy-nfs-pv-q9.yaml
-    kubectl create -f grande-deploy-nfs-pv-q9.yaml
+kubectl create -f pequeno-deploy-nfs-pv-q9.yaml
+kubectl create -f medio-deploy-nfs-pv-q9.yaml
+kubectl create -f grande-deploy-nfs-pv-q9.yaml
 ```
 33. listar os arquivos dentro do path no contêiner 
 ```bash
@@ -352,27 +327,30 @@ spec:
     kubectl exec -ti nginx-medio-xxxx -- ls /shared/
     kubectl exec -ti nginx-grande-xxx -- ls /shared/
 ```
-
+33. listar os arquivos dentro do path no contêiner 
+```bash
+    kubectl exec -ti nginx-pequeno-xxx -- touch /shared/POD_PEQUENO_OK
+    kubectl exec -ti nginx-medio-xxxx -- ls /shared/POD_MEDIO_OK
+    kubectl exec -ti nginx-grande-xxx -- ls /shared/POD_GRANDE_OK
+```
 34. listar os arquivos dentro do path no contêiner 
 ```bash
-    kubectl get pods --sort-by=.spec.capacity.storage
     kubectl get pv --sort-by=.spec.capacity.storage
+    kubectl get pods -o=jsonpath="{.items[*]['metadata.name', 'status.capacity']}"
 ```
 
 ## Efetuando a Limpeza do ambiente (caso necessário)
 35. 
 ```bash
-    kubectl delete -f pequeno-deploy-nfs-pv-q9.yaml
-    kubectl delete -f medio-deploy-nfs-pv-q9.yaml
-    kubectl delete -f grande-deploy-nfs-pv-q9.yaml
-    kubectl delete -f pequeno-pvc-q9.yaml
-    kubectl delete -f medio-pvc-q9.yaml
-    kubectl delete -f grande-pvc-q9.yaml
-    kubectl delete -f pequeno-pv-q9.yaml
-    kubectl delete -f medio-pv-q9.yaml
-    kubectl delete -f grade-pv-q9.yaml
-
-   
+kubectl delete -f pequeno-deploy-nfs-pv-q9.yaml
+kubectl delete -f medio-deploy-nfs-pv-q9.yaml
+kubectl delete -f grande-deploy-nfs-pv-q9.yaml
+kubectl delete -f pequeno-pvc-q9.yaml
+kubectl delete -f medio-pvc-q9.yaml
+kubectl delete -f grande-pvc-q9.yaml
+kubectl delete -f pequeno-pv-q9.yaml
+kubectl delete -f medio-pv-q9.yaml
+kubectl delete -f grande-pv-q9.yaml
 ```
 36. Valide que nenhum artefato está presente no namespace `q9-ns`
 ```bash

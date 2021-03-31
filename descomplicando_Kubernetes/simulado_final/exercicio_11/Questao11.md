@@ -1,6 +1,6 @@
-# Questão 8
+# Questão 11
 
-xxxxxxxxx
+Criar um secret e dois pods, um montando o secret em filesystem e outro como variável
 
 ## Configuração Previa
 0. alguns alias recomendados:
@@ -11,20 +11,21 @@ xxxxxxxxx
  alias kgns="k get ns"
  alias kgtx="k config get-contexts"
  alias kctx="k config set-context --current --namespace"
+complete -F __start_kubectl k
 ```
 
 ## Criação do Namespace e Definição Contexto 
-1. Crie o namespace `q8-ns`.
+1. Crie o namespace `q11-ns`.
 ```bash
-kcns q8-ns
+kcns q11-ns
 ou
-kubectl create namespace q8-ns
+kubectl create namespace q11-ns
 ```
-2. Mude o contexto para o namespace `q8-ns`, criado no passo anterior.
+2. Mude o contexto para o namespace `q11-ns`, criado no passo anterior.
 ```bash
-kctx q8-ns
+kctx q11-ns
 ou
-kubectl config set-context --current --namespace q8-ns
+kubectl config set-context --current --namespace q11-ns
 ```
 3. Confirme a mudança de contexto
 ```bash
@@ -74,7 +75,7 @@ kubectl config get-context
 ```bash
      
 ```
-13. Valide que nenhum artefato está presente no namespace `q8-ns`
+13. Valide que nenhum artefato está presente no namespace `q11-ns`
 ```bash
-    kubectl get all -A | grep -i q8-ns
+    kubectl get all -A | grep -i q11-ns
 ```
