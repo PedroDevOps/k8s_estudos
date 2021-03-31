@@ -5,13 +5,13 @@ Colocar um node para que não execute nenhum containers.
 ## Configuração Previa
 0. alguns alias recomendados:
 ```bash
-$ alias k=kubectl
-alias kgp="k get pods"
-alias kcns="k create ns"
-alias kgns="k get ns"
-alias kgtx="k config get-contexts"
-alias kctx="k config set-context --current --namespace"
-$ alias
+ alias k=kubectl
+ alias kgp="k get pods"
+ alias kcns="k create ns"
+ alias kgns="k get ns"
+ alias kgtx="k config get-contexts"
+ alias kctx="k config set-context --current --namespace"
+ alias
 ```
 ## Criação do Namespace e Definição Contexto 
 1. Crie o namespace `q3-ns`.

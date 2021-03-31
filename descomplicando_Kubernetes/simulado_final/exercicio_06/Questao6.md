@@ -33,11 +33,11 @@ kubectl config get-context
 ```
 
 ## Início da Solução
-4. 
+4. Crie o arquivo de daemon
 ```bash
     vim primeiro-daemonset.yaml
 ```
-5. 
+5. Com o seguinte conteúdo:
 ```bash
 apiVersion: apps/v1
 kind: DaemonSet
@@ -60,36 +60,43 @@ spec:
   updateStrategy:
     type: RollingUpdate
 ```
-6. 
+6. Crie o pod a partir do manifesto.
 ```bash
    kubectl create -f primeiro-daemonset.yaml
 ```
-7. 
+7. Verifique se o damonset foi criado corretamente
 ```bash
     kubectl get daemonset
 ```
-8. 
+8. Verifique suas configurações
 ```bash
     kubectl describe ds daemon-set-primeiro
 ```   
-9. 
+9. Identifique aonde os pods foram criados
 ```bash
     kgp -o wide
 ```
+
 ## Testando a solução
-10. 
+10. Efetue modificaçõe no daemon que está sendo executado
 ```bash
     kubectl set image ds daemon-set-primeiro nginx=nginx:1.15.0
 ```
-11. 
+11. Verifique a versão incial do daemon antes da mudança de imagem
 ```bash
     kubectl rollout history ds daemon-set-primeiro --revision=1
 ```
-12. 
+12. Verifique o rollout após a mudança
 ```bash
     kubectl rollout history ds daemon-set-primeiro --revision=2
 ```
-13. 
+
+## Limpando ambiente (caso seja necessário)
+13. Faça a limpesa do ambiente (Caso necessário)
 ```bash
     k delete -f primeiro-daemonset.yaml
+```
+14. Valide que nenhum artefato está presente no namespace `q6-ns`
+```bash
+    kubectl get all -A | grep -i q6-ns
 ```

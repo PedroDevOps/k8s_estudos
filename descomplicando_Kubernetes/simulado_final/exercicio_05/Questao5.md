@@ -5,13 +5,14 @@ Criar um initcontainer para executar uma tarefa necessária para a subida do con
 ## Configuração Previa
 0. alguns alias recomendados:
 ```bash
-$ alias k=kubectl
-$ alias kgp="k get pods"
-$ alias kcns="k create ns"
-$ alias kgns="k get ns"
-$ alias kgtx="k config get-contexts"
-$ alias kctx="k config set-context --current --namespace"
+ alias k=kubectl
+ alias kgp="k get pods"
+ alias kcns="k create ns"
+ alias kgns="k get ns"
+ alias kgtx="k config get-contexts"
+ alias kctx="k config set-context --current --namespace"
 ```
+
 ## Criação do Namespace e Definição Contexto 
 1. Crie o namespace `q5-ns`.
 ```bash
@@ -68,30 +69,27 @@ spec:
 ```bash
      kubectl create -f nginx-initcontainer.yaml
 ```
+
+## Testando a solução
 7. Visualize o conteúdo de um arquivo dentro de um contêiner do Pod.
 ```bash
     kubectl exec -ti init-demo -- cat /usr/share/nginx/html/index.html
 ```
-
-## 
 8. Coletando os logs do contêiner init:
 ```bash
     kubectl logs init-demo -c install
 ```   
-9. 
+9. Coletando os logs do contêiner nginx:
 ```bash
-    k
+    kubectl logs init-demo -c nginx
 ```
-## Testando a solução
+
+## Limpando ambiente (caso seja necessário)
 10. Removendo o Pod a partir do manifesto:
 ```bash
     kubectl delete -f nginx-initcontainer.yaml
 ```
-11. 
+11. Valide que nenhum artefato está presente no namespace `q5-ns`
 ```bash
-    k
-```
-12. 
-```bash
-    
+    kubectl get all -A | grep -i q5-ns
 ```

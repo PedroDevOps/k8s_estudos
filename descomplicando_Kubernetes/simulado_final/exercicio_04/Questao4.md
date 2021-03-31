@@ -6,7 +6,6 @@ Criar um PV Hostpath.
 0. Cadastre alguns alias recomendados:
 ```bash
  alias k=kubectl
- alias kd="k describe"
  alias kgp="k get pods"
  alias kcns="k create ns"
  alias kgns="k get ns"
@@ -177,6 +176,9 @@ spec:
 ```bash
     k delete -f nfs-pv.yaml
     k delete -f primeiro-pvc.yaml
-    k delete -f primeiro-pv.yaml
-    
+    k delete -f primeiro-pv.yaml 
+```
+23. Valide que nenhum artefato está presente no namespace `q4-ns`
+```bash
+    kubectl get all -A | grep -i q4-ns
 ```
