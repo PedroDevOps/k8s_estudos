@@ -1,6 +1,6 @@
-# Questão 8
+# Questão 12
 
-xxxxxxxxx
+Fazer a instalação do nginx em determinada versão, atualizar e depois realizar o rollback com o --record.
 
 ## Configuração Previa
 0. alguns alias recomendados:
@@ -14,17 +14,17 @@ xxxxxxxxx
 ```
 
 ## Criação do Namespace e Definição Contexto 
-1. Crie o namespace `q8-ns`.
+1. Crie o namespace `q12-ns`.
 ```bash
-kcns q8-ns
+kcns q12-ns
 ou
-kubectl create namespace q8-ns
+kubectl create namespace q12-ns
 ```
-2. Mude o contexto para o namespace `q8-ns`, criado no passo anterior.
+2. Mude o contexto para o namespace `q12-ns`, criado no passo anterior.
 ```bash
-kctx q8-ns
+kctx q12-ns
 ou
-kubectl config set-context --current --namespace q8-ns
+kubectl config set-context --current --namespace q12-ns
 ```
 3. Confirme a mudança de contexto
 ```bash
@@ -74,7 +74,7 @@ kubectl config get-context
 ```bash
      
 ```
-13. Valide que nenhum artefato está presente no namespace `q8-ns`
+13. Valide que nenhum artefato está presente no namespace `q12-ns`
 ```bash
-    kubectl get all -A | grep -i q8-ns
+    kubectl get all -A | grep -i q12-ns
 ```
