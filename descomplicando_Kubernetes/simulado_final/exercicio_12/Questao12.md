@@ -41,7 +41,7 @@ kubectl config get-context
 ```
 5. Modifica-lo caso necessário
 ```bash
-    cp deploymeny-pods-q12-dry-run.yaml deployment-pods-q3.yaml
+    cp deploymeny-pods-q12-dry-run.yaml deployment-pods-q12.yaml
     vi deployment-pods-q12.yaml  
 ```
 6. Criar o deployment com a versão desejada do nginx
