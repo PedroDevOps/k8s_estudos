@@ -4,7 +4,7 @@ metadata:
   creationTimestamp: null
   labels:
     app: nginx
-  name: svc-deploy-nginx-kgpq15
+  name: svc-deploy-nginx-q15
 spec:
   ports:
   - port: 80
