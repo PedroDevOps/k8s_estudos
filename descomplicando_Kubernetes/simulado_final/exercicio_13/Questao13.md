@@ -33,14 +33,13 @@ kgtx
 ou
 kubectl config get-context
 ```
-https://github.com/badtuxx/DescomplicandoKubernetes/blob/master/day-6/DescomplicandoKubernetes-Day6.md#manuten%C3%A7%C3%A3o-do-cluster-etcd
 
 ## Início da Solução
-4. 
+4. Listar os pods do namespace kube-system para poder identificar o pod que está rodando etcd
 ```bash
     kubectl get pods -n kube-system
 ```
-5. 
+5. Vizualise as informaç~eos do pod etcd
 ```bash
     kubectl describe pod etcd-k8smaster01 -n kube-system
     (...)
@@ -50,7 +49,7 @@ https://github.com/badtuxx/DescomplicandoKubernetes/blob/master/day-6/Descomplic
     --trusted-ca-file=/etc/kubernetes/pki/etcd/ca.crt
     (...)
 ```
-6. 
+6. Essas são as varáveis mais importantes para poder interagir com o etcd
 ```bash
     --cert-file
     --key-file
@@ -111,7 +110,7 @@ kubectl exec -it etcd-k8smaster01 -n kube-system \
 --cert=/etc/kubernetes/pki/etcd/server.crt get /registry/pods/default/nginx \
 --prefix=true    
 ```
-14. 
+14. Faça o backup do etcd (no próprio Master)
 ```bash
    ETCDCTL_API=3 etcdctl \
 --cacert /etc/kubernetes/pki/etcd/ca.crt  \
@@ -119,21 +118,29 @@ kubectl exec -it etcd-k8smaster01 -n kube-system \
 --cert /etc/kubernetes/pki/etcd/server.crt \
 --endpoints https://[127.0.0.1]:2379  \
 snapshot save /tmp/snapshot.db
-
+```
+15. Verifique o status do Snapshot (no próprio Master)
+```bash
    ETCDCTL_API=3 etcdctl \
 --cacert /etc/kubernetes/pki/etcd/ca.crt  \
 --key /etc/kubernetes/pki/etcd/server.key \
 --cert /etc/kubernetes/pki/etcd/server.crt \
 --endpoints https://[127.0.0.1]:2379  \
+--write-out=table \
 snapshot status /tmp/snapshot.db
+```
 
+14. Faça o backup do etcd (dentro do pod)
+```bash
 kubectl exec -it etcd-k8smaster01 -n kube-system \
 -- etcdctl --endpoints=https://127.0.0.1:2379 \
 --cacert=/etc/kubernetes/pki/etcd/ca.crt \
 --key=/etc/kubernetes/pki/etcd/server.key \
 --cert=/etc/kubernetes/pki/etcd/server.crt \
 snapshot save snapshot.db
-
+```
+15. Verifique o status do Snapshot (dentro do pod)
+```bash
 kubectl exec -it etcd-k8smaster01 -n kube-system \
 -- etcdctl --endpoints=https://127.0.0.1:2379 \
 --cacert=/etc/kubernetes/pki/etcd/ca.crt \
@@ -150,5 +157,7 @@ snapshot status snapshot.db
 ```
 16. Valide que nenhum artefato está presente no namespace `q13-ns`
 ```bash
+    kubectl get all
+    ou
     kubectl get all -A | grep -i q13-ns
 ```
