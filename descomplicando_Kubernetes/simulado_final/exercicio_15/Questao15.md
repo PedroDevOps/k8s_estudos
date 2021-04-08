@@ -85,6 +85,9 @@ Usar o nslookup e/ou outras ferramentas para pegar o dns do pod e do service.
     kubectl create -f service-nginx-q15.yaml
     kubectl create -f service-deploy-nginx-q15.yaml
 ```
+
+kubectl exec -i -t dnsutils -- nslookup <$POD>.<$NAMESPACE>.pod.cluster.local
+kubectl exec -i -t dnsutils -- nslookup 
 12. 
 ```bash
     # kubectl exec -i -t dnsutils -- nslookup <service-name>.<namespace>
