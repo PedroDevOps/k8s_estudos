@@ -11,6 +11,7 @@ Adicionar um label no node.
  alias kgns="k get ns"
  alias kgtx="k config get-contexts"
  alias kctx="k config set-context --current --namespace"
+ complete -F __start_kubectl k
 ```
 
 ## Criação do Namespace e Definição Contexto 
@@ -53,13 +54,35 @@ kubectl config get-context
 ```bash
    kubectl get nodes k8sworker03 --show-labels
 ```
+8. 
+```bash
+    kubectl create -f https://k8s.io/examples/pods/pod-nginx.yaml --dry-run=client -o yaml > pod-nginx-q17-dry-run.yaml
+```
+9. Faça copias do arquivo para deixar o original como BACKUP
+```bash
+    cp pod-nginx-q17-dry-run.yaml pod-nginx-q17.yaml
+```
+10. 
+```bash
+    vi pod-nginx-q17.yaml
+```
+11. 
+```bash
+    kubectl create -f pod-nginx-q17.yaml
+```
+12. 
+```bash
+    kubectl get pod -o wide
+```
+
 ## Referncias
 8. https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/
 
 ## Limpando ambiente (caso seja necessário)
 9. Faça a limpesa do ambiente (Caso necessário)
 ```bash
-     kubectl label nodes k8sworker03 diskytype=ssd-
+     kubectl label nodes k8sworker03 diskytype-
+     kubectl delete -f pod-nginx-q17.yaml
 ```
 10. Valide que nenhum artefato está presente no namespace `q17-ns`
 ```bash

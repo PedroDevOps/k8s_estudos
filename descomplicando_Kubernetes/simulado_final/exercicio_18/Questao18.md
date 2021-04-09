@@ -11,6 +11,7 @@ Subir um pod com afinidade de node.
  alias kgns="k get ns"
  alias kgtx="k config get-contexts"
  alias kctx="k config set-context --current --namespace"
+ complete -F __start_kubectl k
 ```
 
 ## Criação do Namespace e Definição Contexto 
@@ -36,7 +37,7 @@ kubectl config get-context
 ## Início da Solução
 4. 
 ```bash
-    kubectl run -f https://k8s.io/examples/pods/pod-nginx.yaml --dry-run=client -o yaml > pod-nginx-q18-dry-run.yaml
+    kubectl create -f https://k8s.io/examples/pods/pod-nginx-required-affinity.yaml --dry-run=client -o yaml > pod-nginx-q18-dry-run.yaml
 ```
 5. Faça copias do arquivo para deixar o original como BACKUP
 ```bash
@@ -55,7 +56,7 @@ kubectl config get-context
 8. Adicione o label ao nó
 ```bash
     # kubectl label nodes <your-node-name> disktype=ssd
-    kubectl label nodes k8sworker03 diskytype=ssd
+    kubectl label nodes k8sworker03 disktype=ssd
 ```
 9. Verifique se o label foi aplicado corretamente
 ```bash
@@ -65,14 +66,18 @@ kubectl config get-context
 ```bash
    kubectl create -f pod-nginx-q18.yaml
 ```
-
 ## Limpando ambiente (caso seja necessário)
 12. Faça a limpesa do ambiente (Caso necessário)
 ```bash
-     kubectl label nodes k8sworker03 diskytype=ssd-
+     kubectl label nodes k8sworker03 disktype-
      kubectl delete -f pod-nginx-q18.yaml
 ```
 13. Valide que nenhum artefato está presente no namespace `q18-ns`
 ```bash
+    k get all
+    ou
     kubectl get all -A | grep -i q18-ns
 ```
+
+## Referncias
+14. https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/

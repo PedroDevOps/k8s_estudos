@@ -11,6 +11,7 @@ Adicionar mais um node no cluster.
  alias kgns="k get ns"
  alias kgtx="k config get-contexts"
  alias kctx="k config set-context --current --namespace"
+ complete -F __start_kubectl k
 ```
 
 ## Criação do Namespace e Definição Contexto 
@@ -41,16 +42,18 @@ kubectl config get-context
     curl -fsSL https://get.docker.com | bash
 
     cat > /etc/docker/daemon.json <<EOF
-{
+  {
   "exec-opts": ["native.cgroupdriver=systemd"],
   "log-driver": "json-file",
   "log-opts": {
     "max-size": "100m"
   },
   "storage-driver": "overlay2"
-}
+  }
 EOF
-
+```
+5. 
+```bash
 sudo mkdir -p /etc/systemd/system/docker.service.d
 
 systemctl daemon-reload
@@ -66,14 +69,7 @@ apt-get install -y kubelet kubeadm kubectl
     kubeadm token create --print-join-command
     kubeadm join 172.31.44.232:6443 --token 7ul7e2.0wqfdfy5bsfgxvzk     --discovery-token-ca-cert-hash sha256:1d96aa02f0bd491e04874af76d973a192105aead172a04e7e234973bc96fdb6d 
 ```
-5. 
-```bash
-    
-```
-6. 
-```bash
-   
-```
+
 
 ## Testando a solução
 7. 
