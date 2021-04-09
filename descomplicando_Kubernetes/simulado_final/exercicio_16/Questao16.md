@@ -76,28 +76,25 @@ apt-get install -y kubelet kubeadm kubectl
 ```bash
     
 ```
-8. 
-```bash
-    
-```   
-9. 
-```bash
 
-```
-10. 
-```bash
-    
-```
-11. 
-```bash
-   
-```
 
 ## Limpando ambiente (caso seja necessário)
 12. Faça a limpesa do ambiente (Caso necessário)
 ```bash
-     
+    kubectl get nodes -o wide
+    kubectl drain k8sworker03 --delete-emptydir-data --force --ignore-daemonsets
+    kubectl get nodes
 ```
+12. Acesse o worker que será removido do ambiente (Caso necessário)
+```bash
+    kubeadm reset
+```
+12. Acesse o master do ambiente (Caso necessário)
+```bash
+    kubectl delete node k8sworker03
+    kubectl get nodes
+```
+
 13. Valide que nenhum artefato está presente no namespace `q16-ns`
 ```bash
     kubectl get all -A | grep -i q16-ns

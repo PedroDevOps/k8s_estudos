@@ -11,6 +11,7 @@ Ajustar o nome de uma imagem com nome errado de um deployment
  alias kgns="k get ns"
  alias kgtx="k config get-contexts"
  alias kctx="k config set-context --current --namespace"
+ complete -F __start_kubectl k
 ```
 
 ## Criação do Namespace e Definição Contexto 
