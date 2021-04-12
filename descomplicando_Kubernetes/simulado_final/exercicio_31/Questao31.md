@@ -75,3 +75,6 @@ kubectl config get-context
 ```bash
     kubectl get all -A | grep -i q20-ns
 ```
+
+## Referencia
+14. 
