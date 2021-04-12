@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: two-containers
+  namespace: q27-ns
+spec:
+  containers:
+  - image: nginx
+    name: nginx-container
+    volumeMounts:
+    - mountPath: /usr/share/nginx/html
+      name: shared-data
+  - args:
+    - -c
+    - echo Hello from the debian container > /pod-data/index.html
+    command:
+    - /bin/sh
+    image: debian
+    name: debian-container
+    volumeMounts:
+    - mountPath: /pod-data
+      name: shared-data
+  restartPolicy: Never
+  volumes:
+  - emptyDir: {}
+    name: shared-data
