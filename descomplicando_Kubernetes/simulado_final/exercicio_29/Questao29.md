@@ -1,6 +1,6 @@
-# Questão 20
+# Questão 29
 
-Criar um cronjob.
+Customizar o parâmetro command do container.
 
 ## Configuração Previa
 0. alguns alias recomendados:
@@ -15,17 +15,17 @@ Criar um cronjob.
 ```
 
 ## Criação do Namespace e Definição Contexto 
-1. Crie o namespace `q20-ns`.
+1. Crie o namespace `q29-ns`.
 ```bash
-kcns q20-ns
+kcns q29-ns
 ou
-kubectl create namespace q20-ns
+kubectl create namespace q29-ns
 ```
-2. Mude o contexto para o namespace `q20-ns`, criado no passo anterior.
+2. Mude o contexto para o namespace `q29-ns`, criado no passo anterior.
 ```bash
-kctx q20-ns
+kctx q29-ns
 ou
-kubectl config set-context --current --namespace q20-ns
+kubectl config set-context --current --namespace q29-ns
 ```
 3. Confirme a mudança de contexto
 ```bash
@@ -37,44 +37,50 @@ kubectl config get-context
 ## Início da Solução
 4. 
 ```bash
-    kubectl create -f https://k8s.io/examples/application/job/cronjob.yaml --dry-run=client -o yaml > cronjob-pod-q20-dry-run.yaml
-    ou
-    # kubectl create cronjob NAME --image=image --schedule='0/5 * * * ?' -- [COMMAND] [args...]
-    kubectl create cronjob my-job --image=busybox --schedule="*/1 * * * *" -- date
+    kubectl create -f https://k8s.io/examples/pods/pod-nginx.yaml --dry-run=client -o yaml > pod-nodeselector-q29-dry-run.yaml
 ```
 5. 
 ```bash
-    kubectl get cronjob my-job
+    cp pod-nodeselector-dry-run.yaml pod-nodeselector.yaml
 ```
-
-6k. 
-```bash
-    kubectl get jobs
-```
-
 6. 
 ```bash
-    # Replace "hello-4111706356" with the job name in your system
-    pods=$(kubectl get pods --selector=job-name=hello-4111706356 --output=jsonpath={.items[*].metadata.name})
-    ou
-    kubectl get pods #pegar o nome do ultimo e utilizar ele no próximo comando
+    vim pod-nodeselector.yaml
 ```
 
 ## Testando a solução
-7. 
+8. Liste todos os nós e seus labels
 ```bash
-    kubectl logs $pods
+    kubectl get nodes --show-labels  
+```  
+9. Adicione o label ao nó
+```bash
+    # kubectl label nodes <your-node-name> disktype=ssd
+    kubectl label nodes k8sworker02 disktype=ssd
+```
+10. Verifique se o label foi aplicado corretamente
+```bash
+     kubectl get nodes k8sworker02 --show-labels | grep disktype
+```
+11. 
+```bash
+    kubectl create -f pod-nodeselector-q29.yaml
+```
+12. 
+```bash
+    kubectl get pods
 ```
 
 ## Limpando ambiente (caso seja necessário)
 12. Faça a limpesa do ambiente (Caso necessário)
 ```bash
-     kubectl delete cronjob my-job
+     kubectl delete -f pod-nodeselector-q29.yaml
+     kubectl label nodes k8sworker02 disktype-
 ```
-13. Valide que nenhum artefato está presente no namespace `q20-ns`
+13. Valide que nenhum artefato está presente no namespace `q29-ns`
 ```bash
-    kubectl get all -A | grep -i q20-ns
+    kubectl get all -A | grep -i q29-ns
 ```
 
 ## Referencia
-14. 
+14. https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
