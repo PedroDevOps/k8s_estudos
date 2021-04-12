@@ -1,6 +1,7 @@
-# Questão 20
+# Questão 24
 
-Criar um cronjob.
+Declarar a variável no secret e passar para o container.
+
 
 ## Configuração Previa
 0. alguns alias recomendados:
@@ -15,17 +16,17 @@ Criar um cronjob.
 ```
 
 ## Criação do Namespace e Definição Contexto 
-1. Crie o namespace `q20-ns`.
+1. Crie o namespace `q24-ns`.
 ```bash
-kcns q20-ns
+kcns q24-ns
 ou
-kubectl create namespace q20-ns
+kubectl create namespace q24-ns
 ```
-2. Mude o contexto para o namespace `q20-ns`, criado no passo anterior.
+2. Mude o contexto para o namespace `q24-ns`, criado no passo anterior.
 ```bash
-kctx q20-ns
+kctx q24-ns
 ou
-kubectl config set-context --current --namespace q20-ns
+kubectl config set-context --current --namespace q24-ns
 ```
 3. Confirme a mudança de contexto
 ```bash
@@ -37,14 +38,11 @@ kubectl config get-context
 ## Início da Solução
 4. 
 ```bash
-    kubectl create -f https://k8s.io/examples/application/job/cronjob.yaml --dry-run=client -o yaml > cronjob-pod-q20-dry-run.yaml
-    ou
-    # kubectl create cronjob NAME --image=image --schedule='0/5 * * * ?' -- [COMMAND] [args...]
-    kubectl create cronjob my-job --image=busybox --schedule="*/1 * * * *" -- date
+    kubectl create secret generic backend-user --from-literal=backend-username='Eu-admin?' --dry-run=client -o yaml > secret-q24-dry-run.yaml
 ```
 5. 
 ```bash
-    kubectl get cronjob my-job
+    cp secret-q24-dry-run.yaml secret-q24.yaml
 ```
 
 6k. 
@@ -71,7 +69,10 @@ kubectl config get-context
 ```bash
      kubectl delete cronjob my-job
 ```
-13. Valide que nenhum artefato está presente no namespace `q20-ns`
+13. Valide que nenhum artefato está presente no namespace `q24-ns`
 ```bash
-    kubectl get all -A | grep -i q20-ns
+    kubectl get all -A | grep -i q24-ns
 ```
+
+## Referencia
+14. https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/
