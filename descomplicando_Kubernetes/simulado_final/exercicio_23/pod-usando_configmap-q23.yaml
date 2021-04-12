@@ -5,16 +5,17 @@ metadata:
   namespace: q23-ns
 spec:
   containers:
-  - command:
+  - name: busybox
+    image: busybox
+    args:
     - /bin/sh
     - -c
-    - env
+    - touch /tmp/healthy; sleep 600
+    - env 
     env:
     - name: SPECIAL_LEVEL_KEY
       valueFrom:
         configMapKeyRef:
           key: special.how
           name: special-config
-    image: k8s.gcr.io/busybox
-    name: test-container
   restartPolicy: Never
