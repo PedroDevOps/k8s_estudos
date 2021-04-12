@@ -1,6 +1,6 @@
-# Questão 20
+# Questão 28
 
-Criar um cronjob.
+Customizar o parâmetro command do container.
 
 ## Configuração Previa
 0. alguns alias recomendados:
@@ -15,17 +15,17 @@ Criar um cronjob.
 ```
 
 ## Criação do Namespace e Definição Contexto 
-1. Crie o namespace `q20-ns`.
+1. Crie o namespace `q28-ns`.
 ```bash
-kcns q20-ns
+kcns q28-ns
 ou
-kubectl create namespace q20-ns
+kubectl create namespace q28-ns
 ```
-2. Mude o contexto para o namespace `q20-ns`, criado no passo anterior.
+2. Mude o contexto para o namespace `q28-ns`, criado no passo anterior.
 ```bash
-kctx q20-ns
+kctx q28-ns
 ou
-kubectl config set-context --current --namespace q20-ns
+kubectl config set-context --current --namespace q28-ns
 ```
 3. Confirme a mudança de contexto
 ```bash
@@ -37,33 +37,25 @@ kubectl config get-context
 ## Início da Solução
 4. 
 ```bash
-    kubectl create -f https://k8s.io/examples/application/job/cronjob.yaml --dry-run=client -o yaml > cronjob-pod-q20-dry-run.yaml
-    ou
-    # kubectl create cronjob NAME --image=image --schedule='0/5 * * * ?' -- [COMMAND] [args...]
-    kubectl create cronjob my-job --image=busybox --schedule="*/1 * * * *" -- date
+    kubectl create -f https://k8s.io/examples/pods/commands.yaml --dry-run=client -o yaml > pod-command-q28-dry-run.yaml
 ```
 5. 
 ```bash
-    kubectl get cronjob my-job
+    cp pod-command-q28-dry-run.yaml pod-command-q28.yaml
 ```
-
-6k. 
-```bash
-    kubectl get jobs
-```
-
 6. 
 ```bash
-    # Replace "hello-4111706356" with the job name in your system
-    pods=$(kubectl get pods --selector=job-name=hello-4111706356 --output=jsonpath={.items[*].metadata.name})
-    ou
-    kubectl get pods #pegar o nome do ultimo e utilizar ele no próximo comando
+    vim pod-command-q28.yaml
+```
+6. 
+```bash
+    kubectl create -f pod-command-q28.yaml
 ```
 
 ## Testando a solução
 7. 
 ```bash
-    kubectl logs $pods
+    
 ```
 
 ## Limpando ambiente (caso seja necessário)
@@ -71,10 +63,10 @@ kubectl config get-context
 ```bash
      kubectl delete cronjob my-job
 ```
-13. Valide que nenhum artefato está presente no namespace `q20-ns`
+13. Valide que nenhum artefato está presente no namespace `q28-ns`
 ```bash
-    kubectl get all -A | grep -i q20-ns
+    kubectl get all -A | grep -i q28-ns
 ```
 
 ## Referencia
-14. 
+14. https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/
