@@ -1,6 +1,6 @@
 # Questão 34
 
-
+Verifique a saúde de todos os nodes e seus componentes, como kubelet, proxy, api, controllers, schedullers, etc.
 
 ## Configuração Previa
 0. alguns alias recomendados:

@@ -1,5 +1,6 @@
 # Questão 33
 
+Criar um configmap generic, outro from file e outro literal.
 
 ## Configuração Previa
 0. alguns alias recomendados:
