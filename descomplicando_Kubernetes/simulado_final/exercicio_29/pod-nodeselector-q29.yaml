@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    env: test
+  name: nginx
+  namespace: q29-ns
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: nginx
+  nodeSelector:
+    disktype: ssd
