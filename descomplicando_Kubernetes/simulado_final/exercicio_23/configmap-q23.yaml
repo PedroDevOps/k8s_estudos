@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  special.how: very
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: special-config
