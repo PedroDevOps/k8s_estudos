@@ -1,6 +1,6 @@
-# Questão 20
+# Questão 27
 
-Criar um cronjob.
+Criar um volume Emptydir e compartilhar entre 2 containers.
 
 ## Configuração Previa
 0. alguns alias recomendados:
@@ -15,17 +15,17 @@ Criar um cronjob.
 ```
 
 ## Criação do Namespace e Definição Contexto 
-1. Crie o namespace `q20-ns`.
+1. Crie o namespace `q27-ns`.
 ```bash
-kcns q20-ns
+kcns q27-ns
 ou
-kubectl create namespace q20-ns
+kubectl create namespace q27-ns
 ```
-2. Mude o contexto para o namespace `q20-ns`, criado no passo anterior.
+2. Mude o contexto para o namespace `q27-ns`, criado no passo anterior.
 ```bash
-kctx q20-ns
+kctx q27-ns
 ou
-kubectl config set-context --current --namespace q20-ns
+kubectl config set-context --current --namespace q27-ns
 ```
 3. Confirme a mudança de contexto
 ```bash
@@ -37,14 +37,12 @@ kubectl config get-context
 ## Início da Solução
 4. 
 ```bash
-    kubectl create -f https://k8s.io/examples/application/job/cronjob.yaml --dry-run=client -o yaml > cronjob-pod-q20-dry-run.yaml
-    ou
-    # kubectl create cronjob NAME --image=image --schedule='0/5 * * * ?' -- [COMMAND] [args...]
-    kubectl create cronjob my-job --image=busybox --schedule="*/1 * * * *" -- date
+    kubectl apply -f https://k8s.io/examples/pods/two-container-pod.yaml --dry-run=client -o yaml > pod-2containers-q27-dry-run.yaml
+   
 ```
 5. 
 ```bash
-    kubectl get cronjob my-job
+    cp pod-2containers-q27-dry-run.yaml pod-2containers-q27.yaml
 ```
 
 6k. 
@@ -71,9 +69,9 @@ kubectl config get-context
 ```bash
      kubectl delete cronjob my-job
 ```
-13. Valide que nenhum artefato está presente no namespace `q20-ns`
+13. Valide que nenhum artefato está presente no namespace `q27-ns`
 ```bash
-    kubectl get all -A | grep -i q20-ns
+    kubectl get all -A | grep -i q27-ns
 ```
 
 ## Referencia
