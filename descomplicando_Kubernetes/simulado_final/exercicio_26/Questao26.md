@@ -37,29 +37,43 @@ kubectl config get-context
 ## Início da Solução
 4. Criar um manifesto via --dry-run para um deployent com 5 réplicas
 ```bash
-    kubectl create deploy deploy-nginx --image nginx --replicas 5 --dry-run=client -o yaml > deploy-nginx-q26-dry-run.yaml
+    kubectl create deploy deploy-busybox --image busybox --replicas 5 --dry-run=client -o yaml > deploy-busybox-q26-dry-run.yaml
 ```
 5. Copiar para outro arquivo .yaml
 ```bash
-    cp deploy-nginx-q26-dry-run.yaml deploy-nginx-q26.yaml
+    cp deploy-busybox-q26-dry-run.yaml deploy-busybox-q26.yaml
 ```
 5. 
 ```bash
-    vi deploy-nginx-q26.yaml
+    vi deploy-busybox-q26.yaml
 ```
 6. 
 ```bash
-resources:
-      requests:
-        memory: "64Mi"
-        cpu: "260m"
-      limits:
-        memory: "128Mi"
-        cpu: "500m"
+  containers:
+  - name: busybox
+    image: busybox
+    args:
+    - /bin/sh
+    - -c
+    - touch /tmp/healthy; sleep 30; rm -rf /tmp/healthy; sleep 600
+    livenessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/healthy
+      initialDelaySeconds: 5
+      periodSeconds: 5
+    readinessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/healthy
+      initialDelaySeconds: 5
+      periodSeconds: 5
 ```
-6. Caso seja necessário altere o deploy-nginx.yaml, e depois execute-o
+6. Caso seja necessário altere o deploy-busybox.yaml, e depois execute-o
 ```bash
-   k create -f deploy-nginx-q26.yaml
+   k create -f deploy-busybox-q26.yaml
 ```
 ## Testando a solução
 7. 
@@ -74,7 +88,7 @@ resources:
 ## Limpando ambiente (caso seja necessário)
 12. Faça a limpesa do ambiente (Caso necessário)
 ```bash
-     kubectl delete k -f deploy-nginx-q26.yaml
+     kubectl delete -f deploy-busybox-q26.yaml
 ```
 13. Valide que nenhum artefato está presente no namespace `q26-ns`
 ```bash
@@ -82,4 +96,4 @@ resources:
 ```
 
 ## Referencia
-14. https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+14. https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/

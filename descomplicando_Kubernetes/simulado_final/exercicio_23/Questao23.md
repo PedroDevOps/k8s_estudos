@@ -78,7 +78,6 @@ kubectl config get-context
 ```bash
      kubectl delete -f pod-usando_configmap-q23.yaml
      kubectl delete -f configmap-q23.yaml
-     kubectl delete configmap kube-root-ca.crt
 ```
 13. Valide que nenhum artefato está presente no namespace `q23-ns`
 ```bash
