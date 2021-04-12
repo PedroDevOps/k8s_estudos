@@ -83,3 +83,6 @@ spec:
 ```bash
     kubectl get all -A | grep -i q22-ns
 ```
+
+## Referencia
+13. https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/

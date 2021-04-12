@@ -1,6 +1,6 @@
-# Questão 20
+# Questão 23
 
-Criar um cronjob.
+Declarar a variável na configmap e passar para container.
 
 ## Configuração Previa
 0. alguns alias recomendados:
@@ -15,17 +15,17 @@ Criar um cronjob.
 ```
 
 ## Criação do Namespace e Definição Contexto 
-1. Crie o namespace `q20-ns`.
+1. Crie o namespace `q23-ns`.
 ```bash
-kcns q20-ns
+kcns q23-ns
 ou
-kubectl create namespace q20-ns
+kubectl create namespace q23-ns
 ```
-2. Mude o contexto para o namespace `q20-ns`, criado no passo anterior.
+2. Mude o contexto para o namespace `q23-ns`, criado no passo anterior.
 ```bash
-kctx q20-ns
+kctx q23-ns
 ou
-kubectl config set-context --current --namespace q20-ns
+kubectl config set-context --current --namespace q23-ns
 ```
 3. Confirme a mudança de contexto
 ```bash
@@ -37,41 +37,51 @@ kubectl config get-context
 ## Início da Solução
 4. 
 ```bash
-    kubectl create -f https://k8s.io/examples/application/job/cronjob.yaml --dry-run=client -o yaml > cronjob-pod-q20-dry-run.yaml
-    ou
-    # kubectl create cronjob NAME --image=image --schedule='0/5 * * * ?' -- [COMMAND] [args...]
-    kubectl create cronjob my-job --image=busybox --schedule="*/1 * * * *" -- date
+    kubectl create configmap special-config --from-literal=special.how=very
 ```
 5. 
 ```bash
-    kubectl get cronjob my-job
+    kubectl describe configmap special-config
 ```
-
-6k. 
+5. 
 ```bash
-    kubectl get jobs
+    kubectl create -f https://kubernetes.io/examples/pods/pod-single-configmap-env-variable.yaml --dry-run=client -o yaml > pod-usando_configmap-q23-dry-run.yaml
 ```
-
 6. 
 ```bash
-    # Replace "hello-4111706356" with the job name in your system
-    pods=$(kubectl get pods --selector=job-name=hello-4111706356 --output=jsonpath={.items[*].metadata.name})
-    ou
-    kubectl get pods #pegar o nome do ultimo e utilizar ele no próximo comando
+    cp pod-usando_configmap-q23-dry-run.yaml pod-usando_configmap-q23.yaml
+```
+7. 
+```bash
+    vi pod-usando_configmap-q23.yaml
 ```
 
 ## Testando a solução
-7. 
+8. 
 ```bash
-    kubectl logs $pods
+    kubectl create -f pod-usando_configmap-q23.yaml
+```
+9. 
+```bash
+    kubectl get pods
+```
+10. 
+```bash
+    kubectl describe pod
 ```
 
 ## Limpando ambiente (caso seja necessário)
 12. Faça a limpesa do ambiente (Caso necessário)
 ```bash
-     kubectl delete cronjob my-job
+     kubectl delete -f pod-usando_configmap-q23.yaml
+     kubectl delete configmap special-config
+     kubectl delete configmap kube-root-ca.crt
 ```
-13. Valide que nenhum artefato está presente no namespace `q20-ns`
+13. Valide que nenhum artefato está presente no namespace `q23-ns`
 ```bash
-    kubectl get all -A | grep -i q20-ns
+    kubectl get all -A | grep -i q23-ns
 ```
+
+## Referencia
+
+14. https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/
