@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    purpose: demonstrate-command
+  name: command-demo
+  namespace: q28-ns
+spec:
+  containers:
+  - args:
+    - HOSTNAME
+    - KUBERNETES_PORT
+    command:
+    - printenv
+    image: debian
+    name: command-demo-container
+  restartPolicy: OnFailure
