@@ -1,4 +1,4 @@
-# Questão 20
+# Questão 30
 
 Criar um cronjob.
 
@@ -15,17 +15,17 @@ Criar um cronjob.
 ```
 
 ## Criação do Namespace e Definição Contexto 
-1. Crie o namespace `q20-ns`.
+1. Crie o namespace `q30-ns`.
 ```bash
-kcns q20-ns
+kcns q30-ns
 ou
-kubectl create namespace q20-ns
+kubectl create namespace q30-ns
 ```
-2. Mude o contexto para o namespace `q20-ns`, criado no passo anterior.
+2. Mude o contexto para o namespace `q30-ns`, criado no passo anterior.
 ```bash
-kctx q20-ns
+kctx q30-ns
 ou
-kubectl config set-context --current --namespace q20-ns
+kubectl config set-context --current --namespace q30-ns
 ```
 3. Confirme a mudança de contexto
 ```bash
@@ -37,44 +37,72 @@ kubectl config get-context
 ## Início da Solução
 4. 
 ```bash
-    kubectl create -f https://k8s.io/examples/application/job/cronjob.yaml --dry-run=client -o yaml > cronjob-pod-q20-dry-run.yaml
-    ou
-    # kubectl create cronjob NAME --image=image --schedule='0/5 * * * ?' -- [COMMAND] [args...]
-    kubectl create cronjob my-job --image=busybox --schedule="*/1 * * * *" -- date
+   kubectl create -f https://k8s.io/examples/controllers/nginx-deployment.yaml --dry-run=client -o yaml > deploy-nginx-q30-dry-run.yaml
 ```
 5. 
 ```bash
-    kubectl get cronjob my-job
+    cp deploy-nginx-q30-dry-run.yaml deploy-nginx-q30.yaml
 ```
-
-6k. 
-```bash
-    kubectl get jobs
-```
-
 6. 
 ```bash
-    # Replace "hello-4111706356" with the job name in your system
-    pods=$(kubectl get pods --selector=job-name=hello-4111706356 --output=jsonpath={.items[*].metadata.name})
-    ou
-    kubectl get pods #pegar o nome do ultimo e utilizar ele no próximo comando
+    vi deploy-nginx-q30.yaml
+```
+7. 
+```bash
+    kubectl create -f deploy-nginx-q30.yaml --record 
 ```
 
 ## Testando a solução
-7. 
+8. 
 ```bash
-    kubectl logs $pods
+    kubectl rollout pause deploy nginx-deployment
+```
+9. 
+```bash
+    kubectl set image deployment nginx-deployment nginx=nginx:1.16.1 --record
+```
+10. 
+```bash
+    kubectl rollout history deployment nginx-deployment
+```
+11. 
+```bash
+    kubectl set resources deployment nginx-deployment -c=nginx --limits=cpu=200m,memory=512Mi --record
+```
+12. 
+```bash
+    kubectl rollout history deployment nginx-deployment
+```
+13. 
+```bash
+    kubectl rollout resume deployment nginx-deployment
+```
+14. 
+```bash
+    kubectl get rs -w
+```
+15. 
+```bash
+    kubectl describe deploy nginx-deployment
+```
+16. 
+```bash
+    kubectl describe pod nginx- | grep image
+```
+16. 
+```bash
+    kubectl rollout history deployment nginx-deployment
 ```
 
 ## Limpando ambiente (caso seja necessário)
 12. Faça a limpesa do ambiente (Caso necessário)
 ```bash
-     kubectl delete cronjob my-job
+     kubectl delete -f deploy-nginx-q30.yaml
 ```
-13. Valide que nenhum artefato está presente no namespace `q20-ns`
+13. Valide que nenhum artefato está presente no namespace `q30-ns`
 ```bash
-    kubectl get all -A | grep -i q20-ns
+    kubectl get all -A | grep -i q30-ns
 ```
 
 ## Referencia
-14. 
+14. https://kubernetes.io/docs/concepts/workloads/controllers/_print/
