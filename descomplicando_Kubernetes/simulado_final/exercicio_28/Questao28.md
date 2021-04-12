@@ -55,7 +55,15 @@ kubectl config get-context
 ## Testando a solução
 7. 
 ```bash
-    
+    kubectl logs command-demo
+```
+7. 
+```bash
+    vim pod-command-q28.yaml
+```
+7. 
+```bash
+    kubectl logs command-demo
 ```
 
 ## Limpando ambiente (caso seja necessário)
