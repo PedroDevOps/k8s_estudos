@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    purpose: demonstrate-command
+  name: command-demo
+  namespace: q28-ns
+spec:
+  containers:
+  - args:
+    - PUTA-QUE-PARIU
+    command:
+    - printf
+    image: busybox
+    name: command-demo-container
+  restartPolicy: OnFailure
