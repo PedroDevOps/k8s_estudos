@@ -44,30 +44,38 @@ kubectl config get-context
 ```bash
     cp secret-q24-dry-run.yaml secret-q24.yaml
 ```
-
-6k. 
-```bash
-    kubectl get jobs
-```
-
 6. 
 ```bash
-    # Replace "hello-4111706356" with the job name in your system
-    pods=$(kubectl get pods --selector=job-name=hello-4111706356 --output=jsonpath={.items[*].metadata.name})
-    ou
-    kubectl get pods #pegar o nome do ultimo e utilizar ele no próximo comando
+    vi secret-q24.yaml
+```
+7. 
+```bash
+    kubectl create -f secret-q24.yaml
 ```
 
 ## Testando a solução
-7. 
+8. 
 ```bash
-    kubectl logs $pods
+    kubectl create -f https://k8s.io/examples/pods/inject/pod-single-secret-env-variable.yaml --dry-run=client -o yaml > pod-usando_secret-q24-dry-run.yaml
+```
+9. 
+```bash
+    cp pod-usando_secret-q24-dry-run.yaml pod-usando_secret-q24.yaml
+```
+11. 
+```bash
+    kubectl create -f pod-usando_secret-q24.yaml
+```
+10. 
+```bash
+    kubectl exec -it env-single-secret -- /bin/sh -c 'echo $SECRET_USERNAME'
 ```
 
 ## Limpando ambiente (caso seja necessário)
 12. Faça a limpesa do ambiente (Caso necessário)
 ```bash
-     kubectl delete cronjob my-job
+     kubectl delete -f pod-usando_secret-q24.yaml
+     kubectl delete -f secret-q24.yaml
 ```
 13. Valide que nenhum artefato está presente no namespace `q24-ns`
 ```bash

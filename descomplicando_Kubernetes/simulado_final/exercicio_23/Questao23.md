@@ -37,7 +37,10 @@ kubectl config get-context
 ## Início da Solução
 4. 
 ```bash
-    kubectl create configmap special-config --from-literal=special.how=very
+    kubectl create configmap special-config --from-literal=special.how=very --dry-run=client -o yaml > configmap-q23-dry-run.yaml
+    cp configmap-q23-dry-run.yaml configmap-q23.yaml
+    vi configmap-q23.yaml
+    kubectl create -f configmap-q23.yaml
 ```
 5. 
 ```bash
@@ -74,7 +77,7 @@ kubectl config get-context
 12. Faça a limpesa do ambiente (Caso necessário)
 ```bash
      kubectl delete -f pod-usando_configmap-q23.yaml
-     kubectl delete configmap special-config
+     kubectl delete -f configmap-q23.yaml
      kubectl delete configmap kube-root-ca.crt
 ```
 13. Valide que nenhum artefato está presente no namespace `q23-ns`
