@@ -37,37 +37,45 @@ kubectl config get-context
 ## Início da Solução
 4. 
 ```bash
-    kubectl apply -f https://k8s.io/examples/pods/two-container-pod.yaml --dry-run=client -o yaml > pod-2containers-q27-dry-run.yaml
-   
+    kubectl create -f https://k8s.io/examples/pods/two-container-pod.yaml --dry-run=client -o yaml > pod-2containers-q27-dry-run.yaml
 ```
 5. 
 ```bash
     cp pod-2containers-q27-dry-run.yaml pod-2containers-q27.yaml
 ```
-
-6k. 
-```bash
-    kubectl get jobs
-```
-
 6. 
 ```bash
-    # Replace "hello-4111706356" with the job name in your system
-    pods=$(kubectl get pods --selector=job-name=hello-4111706356 --output=jsonpath={.items[*].metadata.name})
-    ou
-    kubectl get pods #pegar o nome do ultimo e utilizar ele no próximo comando
+    vi pod-2containers-q27.yaml
+```
+7. 
+```bash
+    kubectl create -f pod-2containers-q27.yaml
 ```
 
 ## Testando a solução
-7. 
+8. 
 ```bash
-    kubectl logs $pods
+    kubectl get pods
+```
+9. 
+```bash
+    kubectl exec -it two-containers -c nginx-container -- /bin/bash
+```
+10. 
+```bash
+apt-get update
+apt-get install curl procps
+ps aux
+```
+11. 
+```bash
+curl localhost
 ```
 
 ## Limpando ambiente (caso seja necessário)
 12. Faça a limpesa do ambiente (Caso necessário)
 ```bash
-     kubectl delete cronjob my-job
+     kubectl delete -f pod-2containers-q27.yaml
 ```
 13. Valide que nenhum artefato está presente no namespace `q27-ns`
 ```bash
@@ -75,4 +83,4 @@ kubectl config get-context
 ```
 
 ## Referencia
-14. 
+14. https://kubernetes.io/docs/tasks/access-application-cluster/communicate-containers-same-pod-shared-volume/
